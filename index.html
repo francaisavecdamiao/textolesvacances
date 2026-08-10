@@ -555,9 +555,35 @@ function formatScore(n){
 }
 
 /* =========================================================
+   SONOPLASTIA
+   Os arquivos abaixo devem estar na mesma pasta deste HTML.
+   ========================================================= */
+const SOUND_FILES = {
+  click: 'click.mp3',
+  ok: 'ok.mp3',
+  falha: 'falha.mp3',
+  level: 'level.mp3',
+  levelfail: 'levelfail.mp3',
+  win: 'win01.mp3',
+  losing: 'losing.mp3'
+};
+function playSound(name){
+  try{
+    const src = SOUND_FILES[name];
+    if(!src) return;
+    const audio = new Audio(src);
+    audio.play().catch(()=>{ /* som indisponível ou bloqueado pelo navegador */ });
+  }catch(e){ /* ignora se áudio não puder ser criado */ }
+}
+
+/* =========================================================
    NAVEGAÇÃO
    ========================================================= */
+function levelMaxPts(lvl){ return lvl===1?20:(lvl===2?35:45); }
+function levelPct(lvl){ return (state.levelScores[lvl]/levelMaxPts(lvl))*100; }
+
 function startGame(){
+  playSound('click');
   state.screen='game'; state.level=1; state.qIndex=0;
   state.totalScore=0; state.levelScores={1:0,2:0,3:0};
   setupCurrentQuestion();
@@ -571,9 +597,11 @@ function setupCurrentQuestion(){
 }
 
 function nextQuestion(){
+  playSound('click');
   state.qIndex++;
   if(state.qIndex>=10){
     state.screen='levelComplete';
+    playSound(levelPct(state.level)>=70 ? 'level' : 'levelfail');
     render();
     return;
   }
@@ -582,14 +610,21 @@ function nextQuestion(){
 }
 
 function startNextLevel(){
+  playSound('click');
   state.level++; state.qIndex=0; state.screen='game';
   setupCurrentQuestion();
   render();
 }
 
-function goFinal(){ state.screen='final'; render(); }
+function goFinal(){
+  playSound('click');
+  state.screen='final';
+  playSound(state.totalScore>=75 ? 'win' : 'losing');
+  render();
+}
 
 function resetGame(){
+  playSound('click');
   state.screen='home'; state.level=1; state.qIndex=0;
   state.totalScore=0; state.levelScores={1:0,2:0,3:0};
   render();
@@ -660,14 +695,21 @@ function homeTemplate(){
 
 function levelCompleteTemplate(){
   const lvl = state.level;
-  const max = lvl===1?20:(lvl===2?35:45);
+  const max = levelMaxPts(lvl);
   const earned = state.levelScores[lvl];
+  const pct = levelPct(lvl);
+  const passed = pct>=70;
+  const mascot = passed ? '🐓😄' : '🐓😟';
+  const moodMsg = passed
+    ? 'Muito bem, esse galo está orgulhoso de você!'
+    : 'Esse galo ficou meio apreensivo... vamos revisar mais um pouco!';
   const isLast = lvl===3;
   return `
     <div class="home-card">
-      <div class="mascot">🎉</div>
+      <div class="mascot">${mascot}</div>
       <h1>Nível ${lvl} concluído!</h1>
-      <p class="home-sub">Você fez <strong>${formatScore(earned)} / ${max}</strong> pontos neste nível.</p>
+      <p class="home-sub">Você fez <strong>${formatScore(earned)} / ${max}</strong> pontos neste nível (${Math.round(pct)}%).</p>
+      <p class="home-sub">${moodMsg}</p>
       <p class="home-sub">Pontuação total: <strong>${formatScore(state.totalScore)} / 100</strong></p>
     </div>
     <div class="footer-space"></div>
@@ -679,13 +721,14 @@ function levelCompleteTemplate(){
 
 function finalTemplate(){
   const total = state.totalScore;
-  let msg = '';
-  if(total>=85) msg='Excelente! Você manda muito bem em francês! 🏆';
-  else if(total>=60) msg='Muito bem! Continue praticando! 🌟';
-  else msg='Bom começo! Pratique mais um pouco. 💪';
+  const passed = total>=75;
+  const mascot = passed ? '🐓🥳' : '🐓😭';
+  const msg = passed
+    ? 'Parabéns! Esse galo está cantando de alegria — você mandou muito bem em francês! 🎉'
+    : 'Esse galo ficou super triste... capriche mais um pouco na próxima tentativa e tenha mais dedicação nos estudos! 💪';
   return `
     <div class="home-card">
-      <div class="mascot">🏅</div>
+      <div class="mascot">${mascot}</div>
       <h1>Resultado Final</h1>
       <p class="final-score">${formatScore(total)}<span> / 100</span></p>
       <p class="home-sub">${msg}</p>
@@ -740,6 +783,7 @@ function renderLevel1(){
 
 function selectL1(i){
   if(state.l1.checked) return;
+  playSound('click');
   state.l1.selected = i;
   renderLevel1();
 }
@@ -750,6 +794,9 @@ function checkL1(){
   if(s.options[s.selected].correct){
     state.totalScore += 2;
     state.levelScores[1] += 2;
+    playSound('ok');
+  } else {
+    playSound('falha');
   }
   renderLevel1();
   renderTopbar();
@@ -846,6 +893,7 @@ function renderLevel2(){
 
 function selectL2Blank(which, i){
   if(state.l2.checkedA) return;
+  playSound('click');
   if(which===1) state.l2.b1selected=i; else state.l2.b2selected=i;
   renderLevel2();
 }
@@ -854,19 +902,24 @@ function checkL2Blanks(){
   const q = level2Data[state.qIndex];
   const s = state.l2;
   s.checkedA = true;
-  if(s.b1options[s.b1selected]===q.blank1.correct){ state.totalScore+=1; state.levelScores[2]+=1; }
-  if(s.b2options[s.b2selected]===q.blank2.correct){ state.totalScore+=1; state.levelScores[2]+=1; }
+  const b1ok = s.b1options[s.b1selected]===q.blank1.correct;
+  const b2ok = s.b2options[s.b2selected]===q.blank2.correct;
+  if(b1ok){ state.totalScore+=1; state.levelScores[2]+=1; }
+  if(b2ok){ state.totalScore+=1; state.levelScores[2]+=1; }
+  playSound(b1ok && b2ok ? 'ok' : 'falha');
   renderLevel2();
   renderTopbar();
 }
 
 function advanceL2Step(){
+  playSound('click');
   state.l2.step='B';
   renderLevel2();
 }
 
 function selectL2Translation(i){
   if(state.l2.checkedB) return;
+  playSound('click');
   state.l2.trSelected = i;
   renderLevel2();
 }
@@ -874,7 +927,12 @@ function selectL2Translation(i){
 function checkL2Translation(){
   const s = state.l2;
   s.checkedB = true;
-  if(s.trOptions[s.trSelected].correct){ state.totalScore+=1.5; state.levelScores[2]+=1.5; }
+  if(s.trOptions[s.trSelected].correct){
+    state.totalScore+=1.5; state.levelScores[2]+=1.5;
+    playSound('ok');
+  } else {
+    playSound('falha');
+  }
   renderLevel2();
   renderTopbar();
 }
@@ -934,6 +992,7 @@ function addL3Tile(id){
   if(s.checked) return;
   const item = s.bank.find(b=>b.id===id);
   if(item.used) return;
+  playSound('click');
   item.used = true;
   s.built.push(id);
   renderLevel3();
@@ -942,6 +1001,7 @@ function addL3Tile(id){
 function removeL3Tile(id){
   const s = state.l3;
   if(s.checked) return;
+  playSound('click');
   const item = s.bank.find(b=>b.id===id);
   item.used = false;
   s.built = s.built.filter(x=>x!==id);
@@ -956,6 +1016,9 @@ function checkL3(){
   if(builtWords.join(' ')===q.correctTokens.join(' ')){
     state.totalScore += 4.5;
     state.levelScores[3] += 4.5;
+    playSound('ok');
+  } else {
+    playSound('falha');
   }
   renderLevel3();
   renderTopbar();
