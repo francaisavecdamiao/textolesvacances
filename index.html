@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Aventura em Francês — Jogo Interativo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green: #58CC02;
+    --green-dark: #46A302;
+    --blue: #1CB0F6;
+    --blue-dark: #1899D6;
+    --gold: #FFC800;
+    --gold-dark: #E6B400;
+    --red: #FF4B4B;
+    --red-dark: #EA2B2B;
+    --text: #3C3C3C;
+    --text-light: #6b7280;
+    --bg: #F7F9FA;
+    --card: #FFFFFF;
+    --border: #E5E5E5;
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --radius-sm: 10px;
+  }
+
+  *{ box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html,body{
+    margin:0; padding:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+  }
+
+  h1,h2{ font-family:'Baloo 2', sans-serif; margin:0; }
+
+  #page{
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: var(--bg);
+    display:flex;
+    flex-direction: column;
+    box-shadow: 0 0 40px rgba(0,0,0,0.06);
+  }
+
+  /* ---------- TOPBAR ---------- */
+  #topbar{
+    position: sticky;
+    top:0;
+    z-index: 10;
+    background: var(--card);
+    border-bottom: 2px solid var(--border);
+    padding: 10px 16px 12px;
+  }
+  .topbar-row{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap:10px;
+    margin-bottom:8px;
+  }
+  .level-label{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size: 15px;
+    color: var(--text);
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+  }
+  .score-badge{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size: 15px;
+    background: #FFF8E1;
+    color:#B8860B;
+    border: 2px solid var(--gold);
+    border-radius: 999px;
+    padding: 4px 12px;
+    white-space: nowrap;
+    flex-shrink:0;
+  }
+  .score-max{ font-weight:600; opacity:.7; font-size:12px; }
+  .progress-track{
+    background: #E5E5E5;
+    border-radius: 999px;
+    height: 12px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background: linear-gradient(90deg, var(--green), #7ED321);
+    border-radius: 999px;
+    transition: width .4s ease;
+  }
+
+  /* ---------- LAYOUT ---------- */
+  main#content{
+    flex:1;
+    padding: 20px 16px 12px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+
+  .btn{
+    font-family:'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: .3px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 16px;
+    padding: 15px 20px;
+    cursor: pointer;
+    color: #fff;
+    background: var(--green);
+    box-shadow: 0 4px 0 var(--green-dark);
+    transition: transform .05s ease, box-shadow .05s ease, opacity .2s ease;
+  }
+  .btn:active:not(:disabled){ transform: translateY(4px); box-shadow: 0 0 0 var(--green-dark); }
+  .btn:disabled{ opacity:.45; cursor:not-allowed; }
+  .btn-block{ width:100%; margin-top:auto; position: sticky; bottom: 16px; }
+
+  .footer-space{ flex:1; }
+
+  /* ---------- HOME / LEVEL COMPLETE / FINAL ---------- */
+  .home-card{
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px 22px;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    animation: popIn .35s ease;
+  }
+  .mascot{ font-size: 56px; line-height:1; margin-bottom:4px; }
+  .home-card h1{ font-size: 24px; color: var(--text); }
+  .home-sub{ font-size:15px; color: var(--text-light); margin:0; line-height:1.5; }
+  .level-preview{ width:100%; display:flex; flex-direction:column; gap:10px; margin-top:14px; }
+  .level-chip{
+    display:flex; align-items:center; gap:10px;
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    font-weight:700;
+    font-size:14px;
+    text-align:left;
+  }
+  .chip-num{
+    background: var(--blue);
+    color:#fff;
+    width:26px;height:26px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Baloo 2', sans-serif;
+    flex-shrink:0;
+  }
+  .chip-pts{ margin-left:auto; color: var(--gold-dark); font-family:'Baloo 2', sans-serif; }
+
+  .final-score{
+    font-family:'Baloo 2', sans-serif;
+    font-size: 44px;
+    font-weight: 800;
+    color: var(--green-dark);
+    margin: 4px 0;
+  }
+  .final-score span{ font-size:18px; color: var(--text-light); font-weight:700; }
+  .breakdown{ width:100%; margin-top:12px; display:flex; flex-direction:column; gap:8px; }
+  .breakdown-row{
+    display:flex; justify-content:space-between;
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-weight:700;
+    font-size:14px;
+  }
+
+  /* ---------- QUESTION CARD ---------- */
+  .question-card{
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    animation: popIn .3s ease;
+  }
+  .instruction{
+    font-size:13px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--text-light);
+    font-weight:700;
+    margin:0 0 8px;
+  }
+  .fr-sentence{
+    font-family:'Baloo 2', sans-serif;
+    font-size: 20px;
+    font-weight:600;
+    color: var(--text);
+    line-height:1.5;
+    margin: 0 0 18px;
+  }
+  .pt-sentence{
+    font-family:'Baloo 2', sans-serif;
+    font-size: 19px;
+    font-weight:600;
+    color: var(--text);
+    line-height:1.5;
+    margin: 0 0 18px;
+    background: #EFF8FF;
+    border-left: 4px solid var(--blue);
+    padding: 10px 14px;
+    border-radius: 8px;
+  }
+
+  .options-grid{ display:flex; flex-direction:column; gap:10px; }
+  .option-card{
+    font-family:'Nunito', sans-serif;
+    font-weight:700;
+    font-size: 15px;
+    text-align:left;
+    background: #fff;
+    border: 2px solid var(--border);
+    border-bottom-width:4px;
+    border-radius: var(--radius-md);
+    padding: 13px 16px;
+    color: var(--text);
+    cursor:pointer;
+    transition: all .12s ease;
+  }
+  .option-card:hover:not(:disabled){ background:#F7FBFF; }
+  .option-card.selected{ border-color: var(--blue); background:#EFF8FF; color: var(--blue-dark); }
+  .option-card.correct{ border-color: var(--green); background:#EEFAE2; color: var(--green-dark); }
+  .option-card.wrong{ border-color: var(--red); background:#FFEDED; color: var(--red-dark); }
+  .option-card:disabled{ cursor:default; }
+
+  /* blanks (Nível 2) */
+  .blank{
+    display:inline-block;
+    min-width: 34px;
+    text-align:center;
+    padding: 2px 10px;
+    margin: 0 2px;
+    border-radius: 8px;
+    background: #EEE;
+    color: var(--text-light);
+    font-weight:800;
+    border-bottom: 3px solid #CCC;
+  }
+  .blank-filled{ background:#EFF8FF; color: var(--blue-dark); border-bottom-color: var(--blue); }
+  .blank-correct{ background:#EEFAE2; color: var(--green-dark); border-bottom-color: var(--green); }
+  .blank-wrong{ background:#FFEDED; color: var(--red-dark); border-bottom-color: var(--red); }
+
+  .chip-label{
+    font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.4px;
+    color: var(--text-light); margin: 14px 0 8px;
+  }
+  .chip-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip-option{
+    font-family:'Nunito', sans-serif;
+    font-weight:700;
+    font-size: 14px;
+    background:#fff;
+    border: 2px solid var(--border);
+    border-bottom-width:4px;
+    border-radius: 999px;
+    padding: 9px 16px;
+    cursor:pointer;
+    color: var(--text);
+    transition: all .12s ease;
+  }
+  .chip-option.selected{ border-color: var(--blue); background:#EFF8FF; color:var(--blue-dark); }
+  .chip-option.correct{ border-color: var(--green); background:#EEFAE2; color:var(--green-dark); }
+  .chip-option.wrong{ border-color: var(--red); background:#FFEDED; color:var(--red-dark); }
+
+  /* build row (Nível 3) */
+  .build-row{
+    min-height: 52px;
+    border: 2px dashed var(--border);
+    border-radius: var(--radius-md);
+    padding: 10px;
+    display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+    margin-bottom: 16px;
+    transition: border-color .2s ease, background .2s ease;
+  }
+  .build-row.row-correct{ border-style:solid; border-color: var(--green); background:#EEFAE2; }
+  .build-row.row-wrong{ border-style:solid; border-color: var(--red); background:#FFEDED; }
+  .build-placeholder{ color: var(--text-light); font-size:13px; font-style:italic; }
+
+  .gabarito{
+    font-size: 13px;
+    color: var(--red-dark);
+    background: #FFF3F3;
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    margin: -6px 0 14px;
+  }
+
+  .bank-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .tile{
+    font-family:'Nunito', sans-serif;
+    font-weight:800;
+    font-size: 14px;
+    background:#fff;
+    border: 2px solid var(--border);
+    border-bottom-width:4px;
+    border-radius: 10px;
+    padding: 9px 14px;
+    cursor:pointer;
+    color: var(--text);
+    transition: transform .08s ease;
+  }
+  .tile:active{ transform: scale(.94); }
+  .tile.placed{ background:#EFF8FF; border-color: var(--blue); color: var(--blue-dark); }
+  .tile.placed.correct{ background:#EEFAE2; border-color: var(--green); color: var(--green-dark); }
+  .tile.placed.wrong{ background:#FFEDED; border-color: var(--red); color: var(--red-dark); }
+
+  @keyframes popIn{
+    from{ opacity:0; transform: translateY(8px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div id="page">
+  <div id="topbar"></div>
+  <main id="content"></main>
+</div>
+
+<script>
+/* =========================================================
+   DADOS DO JOGO
+   ========================================================= */
+
+const level1Data = [
+  { fr:"Il fait chaud et le soleil est très joli.",
+    correct:"Faz calor e o sol é muito bonito.",
+    wrong:[
+      "Faz frio e o sol é muito bonito.",
+      "Faz calor e a lua é muito bonita.",
+      "Fez calor e o sol estava muito bonito.",
+      "Faz calor e o sol é muito feio."
+    ]},
+  { fr:"Je vais à la plage l'après-midi avec mon frère.",
+    correct:"Eu vou à praia à tarde com meu irmão.",
+    wrong:[
+      "Eu vou à praia de manhã com meu irmão.",
+      "Eu vou à praia à tarde com minha irmã.",
+      "Eu fui à praia à tarde com meu irmão.",
+      "Eu vou ao restaurante à tarde com meu irmão."
+    ]},
+  { fr:"La famille aime faire des promenades le soir.",
+    correct:"A família gosta de fazer passeios à noite.",
+    wrong:[
+      "A família gosta de fazer passeios de manhã.",
+      "A família odeia fazer passeios à noite.",
+      "O amigo gosta de fazer passeios à noite.",
+      "A família gosta de nadar à noite."
+    ]},
+  { fr:"Nous mangeons du chocolat pendant le soir.",
+    correct:"Nós comemos chocolate durante a noite.",
+    wrong:[
+      "Nós bebemos chocolate durante a noite.",
+      "Nós comemos chocolate durante a tarde.",
+      "Nós comemos sorvete durante a noite.",
+      "Eles comem chocolate durante a noite."
+    ]},
+  { fr:"Mon frère adore boire du jus d'orange le matin.",
+    correct:"Meu irmão adora beber suco de laranja de manhã.",
+    wrong:[
+      "Meu irmão adora beber suco de laranja à noite.",
+      "Minha irmã adora beber suco de laranja de manhã.",
+      "Meu irmão adora comer suco de laranja de manhã.",
+      "Meu irmão detesta beber suco de laranja de manhã."
+    ]},
+  { fr:"Le soir, il fait frais dans le petit village.",
+    correct:"De noite, está fresco no pequeno vilarejo.",
+    wrong:[
+      "De manhã, está fresco no pequeno vilarejo.",
+      "De noite, está quente no pequeno vilarejo.",
+      "De noite, está fresco na grande cidade.",
+      "De noite, estava fresco no pequeno vilarejo."
+    ]},
+  { fr:"J'aime lire un livre dans le petit restaurant.",
+    correct:"Eu gosto de ler um livro no pequeno restaurante.",
+    wrong:[
+      "Eu gosto de escrever um livro no pequeno restaurante.",
+      "Eu gosto de ler um jornal no pequeno restaurante.",
+      "Eu gosto de ler um livro no grande restaurante.",
+      "Eu odeio ler um livro no pequeno restaurante."
+    ]},
+  { fr:"Pour se reposer, il va à la plage le soir.",
+    correct:"Para descansar, ele vai à praia à noite.",
+    wrong:[
+      "Para descansar, ele vai à praia de manhã.",
+      "Para descansar, ela vai à praia à noite.",
+      "Para se divertir, ele vai à praia à noite.",
+      "Para descansar, ele vai à montanha à noite."
+    ]},
+  { fr:"Le matin, j'aime boire du jus d'orange frais.",
+    correct:"De manhã, eu gosto de beber suco de laranja natural.",
+    wrong:[
+      "À noite, eu gosto de beber suco de laranja natural.",
+      "De manhã, eu gosto de beber suco de maçã natural.",
+      "De manhã, eu gosto de comer suco de laranja natural.",
+      "De manhã, eu detesto beber suco de laranja natural."
+    ]},
+  { fr:"Mon frère aime nager dans la mer avec la famille.",
+    correct:"Meu irmão gosta de nadar no mar com a família.",
+    wrong:[
+      "Meu irmão gosta de nadar no rio com a família.",
+      "Minha irmã gosta de nadar no mar com a família.",
+      "Meu irmão gosta de caminhar no mar com a família.",
+      "Meu irmão odeia nadar no mar com a família."
+    ]}
+];
+
+const level2Data = [
+  { frBlanked:"Les [ 1 ] dans le sud de la France sont [ 2 ].",
+    frFull:"Les vacances dans le sud de la France sont magnifiques.",
+    blank1:{ options:["vacances","valises","voitures"], correct:"vacances" },
+    blank2:{ options:["magnifiques","fatigantes","chères"], correct:"magnifiques" },
+    transCorrect:"As férias no sul da França são magníficas.",
+    transWrong:["As férias no norte da França são magníficas.","As malas no sul da França são magníficas."] },
+  { frBlanked:"Les [ 1 ] sont frais, mais l'après-midi il fait [ 2 ].",
+    frFull:"Les matins sont frais, mais l'après-midi il fait chaud.",
+    blank1:{ options:["matins","soirs","jours"], correct:"matins" },
+    blank2:{ options:["chaud","froid","beau"], correct:"chaud" },
+    transCorrect:"As manhãs são frescas, mas à tarde faz calor.",
+    transWrong:["As noites são frescas, mas à tarde faz calor.","As manhãs são frescas, mas à tarde faz frio."] },
+  { frBlanked:"Les petits [ 1 ] sont magnifiques et nous y allons [ 2 ] ensemble.",
+    frFull:"Les petits villages sont magnifiques et nous y allons souvent ensemble.",
+    blank1:{ options:["villages","restaurants","marchés"], correct:"villages" },
+    blank2:{ options:["souvent","rarement","toujours"], correct:"souvent" },
+    transCorrect:"As vilas pequenas são magníficas e nós vamos lá frequentemente juntos.",
+    transWrong:["Os restaurantes pequenos são magníficos e nós vamos lá frequentemente juntos.","As vilas pequenas são magníficas e nós vamos lá raramente juntos."] },
+  { frBlanked:"En [ 1 ], la famille aime [ 2 ] et se reposer.",
+    frFull:"En juillet, la famille aime nager et se reposer.",
+    blank1:{ options:["juillet","décembre","janvier"], correct:"juillet" },
+    blank2:{ options:["nager","voyager","manger"], correct:"nager" },
+    transCorrect:"Em julho, a família gosta de nadar e descansar.",
+    transWrong:["Em dezembro, a família gosta de nadar e descansar.","Em julho, a família gosta de viajar e descansar."] },
+  { frBlanked:"Il [ 1 ] les glaces au chocolat du [ 2 ].",
+    frFull:"Il adore les glaces au chocolat du village.",
+    blank1:{ options:["adore","déteste","cherche"], correct:"adore" },
+    blank2:{ options:["village","restaurant","marché"], correct:"village" },
+    transCorrect:"Ele adora os sorvetes de chocolate da vila.",
+    transWrong:["Ele detesta os sorvetes de chocolate da vila.","Ele adora os sorvetes de chocolate do restaurante."] },
+  { frBlanked:"Mon [ 1 ] adore manger de la glace au chocolat à la [ 2 ].",
+    frFull:"Mon frère adore manger de la glace au chocolat à la plage.",
+    blank1:{ options:["frère","père","ami"], correct:"frère" },
+    blank2:{ options:["plage","montagne","mer"], correct:"plage" },
+    transCorrect:"Meu irmão adora comer sorvete de chocolate na praia.",
+    transWrong:["Meu pai adora comer sorvete de chocolate na praia.","Meu irmão adora comer sorvete de chocolate na montanha."] },
+  { frBlanked:"Ce temps est [ 1 ] pour [ 2 ] et s'amuser en France.",
+    frFull:"Ce temps est parfait pour voyager et s'amuser en France.",
+    blank1:{ options:["parfait","mauvais","difficile"], correct:"parfait" },
+    blank2:{ options:["voyager","travailler","étudier"], correct:"voyager" },
+    transCorrect:"Esse tempo é perfeito para viajar e se divertir na França.",
+    transWrong:["Esse tempo é ruim para viajar e se divertir na França.","Esse tempo é perfeito para trabalhar e se divertir na França."] },
+  { frBlanked:"J'adore [ 1 ] un livre à la mer pour me [ 2 ].",
+    frFull:"J'adore lire un livre à la mer pour me reposer.",
+    blank1:{ options:["lire","acheter","écrire"], correct:"lire" },
+    blank2:{ options:["reposer","promener","amuser"], correct:"reposer" },
+    transCorrect:"Eu adoro ler um livro no mar para descansar.",
+    transWrong:["Eu adoro comprar um livro no mar para descansar.","Eu adoro ler um livro no mar para passear."] },
+  { frBlanked:"Pendant les [ 1 ], nous allons dans le [ 2 ] de la France.",
+    frFull:"Pendant les vacances, nous allons dans le sud de la France.",
+    blank1:{ options:["vacances","cours","réunions"], correct:"vacances" },
+    blank2:{ options:["sud","nord","centre"], correct:"sud" },
+    transCorrect:"Durante as férias, nós vamos para o sul da França.",
+    transWrong:["Durante as aulas, nós vamos para o sul da França.","Durante as férias, nós vamos para o norte da França."] },
+  { frBlanked:"Nous faisons des [ 1 ] dans de très [ 2 ] petits villages.",
+    frFull:"Nous faisons des promenades dans de très jolis petits villages.",
+    blank1:{ options:["promenades","courses","photos"], correct:"promenades" },
+    blank2:{ options:["jolis","vieux","grands"], correct:"jolis" },
+    transCorrect:"Nós fazemos passeios em vilas pequenas e muito bonitas.",
+    transWrong:["Nós fazemos compras em vilas pequenas e muito bonitas.","Nós fazemos passeios em vilas pequenas e muito antigas."] }
+];
+
+const level3Data = [
+  { pt:"À noite, a família vai ao restaurante para comer juntos.",
+    correctTokens:["Le","soir,","la","famille","va","au","restaurant","pour","manger","ensemble."],
+    distractors:["voir","changer"] },
+  { pt:"Nós visitamos restaurantes locais e nós comemos muito bem.",
+    correctTokens:["Nous","visitons","des","restaurants","locaux","et","nous","mangeons","très","bien."],
+    distractors:["loyaux","bain"] },
+  { pt:"Nós visitamos vilas muito bonitas durante as férias.",
+    correctTokens:["Nous","visitons","de","très","jolis","villages","pendant","les","vacances."],
+    distractors:["visages","valises"] },
+  { pt:"O tempo está perfeito para fazer passeios juntos.",
+    correctTokens:["Le","temps","est","parfait","pour","faire","des","promenades","ensemble."],
+    distractors:["champs","parfum"] },
+  { pt:"Nós vamos ao restaurante para beber suco de laranja fresco.",
+    correctTokens:["Nous","allons","au","restaurant","pour","boire","du","jus","d'orange","frais."],
+    distractors:["voir","vrai"] },
+  { pt:"Meu irmão e a família sempre se divertem no mar.",
+    correctTokens:["Mon","frère","et","la","famille","s'amusent","toujours","à","la","mer."],
+    distractors:["mère","toutefois"] },
+  { pt:"À tarde, faz calor e o sol está maravilhoso.",
+    correctTokens:["L'après-midi,","il","fait","chaud","et","le","soleil","est","magnifique."],
+    distractors:["chaux","sommeil"] },
+  { pt:"É uma estação magnífica para viajar no sul.",
+    correctTokens:["C'est","une","saison","magnifique","pour","voyager","dans","le","sud."],
+    distractors:["maison","sur"] },
+  { pt:"A cada ano, nós viajamos juntos e nos divertimos muito.",
+    correctTokens:["Chaque","année,","nous","voyagons","ensemble","et","nous","nous","amusons","beaucoup."],
+    distractors:["amenons","annuelle"] },
+  { pt:"É a minha estação preferida porque o tempo está realmente perfeito.",
+    correctTokens:["C'est","ma","saison","préférée","parce","que","le","temps","est","vraiment","parfait."],
+    distractors:["maison","champ"] }
+];
+
+/* =========================================================
+   ESTADO GLOBAL
+   ========================================================= */
+const state = {
+  screen: 'home',
+  level: 1,
+  qIndex: 0,
+  totalScore: 0,
+  levelScores: {1:0, 2:0, 3:0},
+  l1: null,
+  l2: null,
+  l3: null
+};
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function formatScore(n){
+  const rounded = Math.round(n*10)/10;
+  return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+}
+
+/* =========================================================
+   NAVEGAÇÃO
+   ========================================================= */
+function startGame(){
+  state.screen='game'; state.level=1; state.qIndex=0;
+  state.totalScore=0; state.levelScores={1:0,2:0,3:0};
+  setupCurrentQuestion();
+  render();
+}
+
+function setupCurrentQuestion(){
+  if(state.level===1) setupLevel1Question(state.qIndex);
+  else if(state.level===2) setupLevel2Question(state.qIndex);
+  else setupLevel3Question(state.qIndex);
+}
+
+function nextQuestion(){
+  state.qIndex++;
+  if(state.qIndex>=10){
+    state.screen='levelComplete';
+    render();
+    return;
+  }
+  setupCurrentQuestion();
+  render();
+}
+
+function startNextLevel(){
+  state.level++; state.qIndex=0; state.screen='game';
+  setupCurrentQuestion();
+  render();
+}
+
+function goFinal(){ state.screen='final'; render(); }
+
+function resetGame(){
+  state.screen='home'; state.level=1; state.qIndex=0;
+  state.totalScore=0; state.levelScores={1:0,2:0,3:0};
+  render();
+}
+
+/* =========================================================
+   RENDER PRINCIPAL
+   ========================================================= */
+function render(){
+  renderTopbar();
+  const content = document.getElementById('content');
+  if(state.screen==='home'){ content.innerHTML = homeTemplate(); }
+  else if(state.screen==='game'){
+    if(state.level===1) renderLevel1();
+    else if(state.level===2) renderLevel2();
+    else renderLevel3();
+  }
+  else if(state.screen==='levelComplete'){ content.innerHTML = levelCompleteTemplate(); }
+  else if(state.screen==='final'){ content.innerHTML = finalTemplate(); }
+}
+
+function renderTopbar(){
+  const bar = document.getElementById('topbar');
+  const scoreTxt = formatScore(state.totalScore);
+  let progressPct = 0;
+  let levelLabel = 'Aventura em Francês';
+  if(state.screen==='game'){
+    const completed = (state.level-1)*10 + state.qIndex;
+    progressPct = Math.round((completed/30)*100);
+    levelLabel = `Nível ${state.level} · Questão ${state.qIndex+1}/10`;
+  } else if(state.screen==='levelComplete'){
+    progressPct = Math.round((state.level*10/30)*100);
+    levelLabel = `Nível ${state.level} concluído`;
+  } else if(state.screen==='final'){
+    progressPct = 100;
+    levelLabel = 'Jogo concluído';
+  } else {
+    levelLabel = 'Pronto para começar?';
+  }
+  bar.innerHTML = `
+    <div class="topbar-row">
+      <span class="level-label">${levelLabel}</span>
+      <span class="score-badge">🏆 ${scoreTxt}<span class="score-max">/100</span></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:${progressPct}%"></div></div>
+  `;
+}
+
+/* =========================================================
+   TELAS: HOME / LEVEL COMPLETE / FINAL
+   ========================================================= */
+function homeTemplate(){
+  return `
+    <div class="home-card">
+      <div class="mascot">🐓</div>
+      <h1>Aventura em Francês</h1>
+      <p class="home-sub">Complete os 3 níveis e conquiste até <strong>100 pontos</strong>!</p>
+      <div class="level-preview">
+        <div class="level-chip"><span class="chip-num">1</span> Tradução Direta <span class="chip-pts">20 pts</span></div>
+        <div class="level-chip"><span class="chip-num">2</span> Lacunas Duplas <span class="chip-pts">35 pts</span></div>
+        <div class="level-chip"><span class="chip-num">3</span> Monte a Frase <span class="chip-pts">45 pts</span></div>
+      </div>
+    </div>
+    <div class="footer-space"></div>
+    <button class="btn btn-block" onclick="startGame()">Começar</button>
+  `;
+}
+
+function levelCompleteTemplate(){
+  const lvl = state.level;
+  const max = lvl===1?20:(lvl===2?35:45);
+  const earned = state.levelScores[lvl];
+  const isLast = lvl===3;
+  return `
+    <div class="home-card">
+      <div class="mascot">🎉</div>
+      <h1>Nível ${lvl} concluído!</h1>
+      <p class="home-sub">Você fez <strong>${formatScore(earned)} / ${max}</strong> pontos neste nível.</p>
+      <p class="home-sub">Pontuação total: <strong>${formatScore(state.totalScore)} / 100</strong></p>
+    </div>
+    <div class="footer-space"></div>
+    <button class="btn btn-block" onclick="${isLast ? 'goFinal()' : 'startNextLevel()'}">
+      ${isLast ? 'Ver Resultado Final' : 'Continuar para o Nível '+(lvl+1)}
+    </button>
+  `;
+}
+
+function finalTemplate(){
+  const total = state.totalScore;
+  let msg = '';
+  if(total>=85) msg='Excelente! Você manda muito bem em francês! 🏆';
+  else if(total>=60) msg='Muito bem! Continue praticando! 🌟';
+  else msg='Bom começo! Pratique mais um pouco. 💪';
+  return `
+    <div class="home-card">
+      <div class="mascot">🏅</div>
+      <h1>Resultado Final</h1>
+      <p class="final-score">${formatScore(total)}<span> / 100</span></p>
+      <p class="home-sub">${msg}</p>
+      <div class="breakdown">
+        <div class="breakdown-row"><span>Nível 1 — Tradução</span><span>${formatScore(state.levelScores[1])} / 20</span></div>
+        <div class="breakdown-row"><span>Nível 2 — Lacunas</span><span>${formatScore(state.levelScores[2])} / 35</span></div>
+        <div class="breakdown-row"><span>Nível 3 — Monte a Frase</span><span>${formatScore(state.levelScores[3])} / 45</span></div>
+      </div>
+    </div>
+    <div class="footer-space"></div>
+    <button class="btn btn-block" onclick="resetGame()">Jogar Novamente</button>
+  `;
+}
+
+/* =========================================================
+   NÍVEL 1 — Tradução Direta
+   ========================================================= */
+function setupLevel1Question(idx){
+  const q = level1Data[idx];
+  const opts = shuffle([
+    { text:q.correct, correct:true },
+    ...q.wrong.map(w=>({ text:w, correct:false }))
+  ]);
+  state.l1 = { options:opts, selected:null, checked:false };
+}
+
+function renderLevel1(){
+  const s = state.l1;
+  const optsHtml = s.options.map((o,i)=>{
+    let cls='option-card';
+    if(s.checked){
+      if(o.correct) cls+=' correct';
+      else if(i===s.selected) cls+=' wrong';
+    } else if(i===s.selected){ cls+=' selected'; }
+    return `<button class="${cls}" ${s.checked?'disabled':''} onclick="selectL1(${i})">${o.text}</button>`;
+  }).join('');
+
+  const btnLabel = s.checked ? 'Continuar' : 'Verificar';
+  const btnDisabled = (!s.checked && s.selected===null);
+  const btnOnclick = s.checked ? 'nextQuestion()' : 'checkL1()';
+
+  document.getElementById('content').innerHTML = `
+    <div class="question-card">
+      <p class="instruction">Traduza a frase</p>
+      <p class="fr-sentence">${level1Data[state.qIndex].fr}</p>
+      <div class="options-grid">${optsHtml}</div>
+    </div>
+    <div class="footer-space"></div>
+    <button class="btn btn-block" ${btnDisabled?'disabled':''} onclick="${btnOnclick}">${btnLabel}</button>
+  `;
+}
+
+function selectL1(i){
+  if(state.l1.checked) return;
+  state.l1.selected = i;
+  renderLevel1();
+}
+
+function checkL1(){
+  const s = state.l1;
+  s.checked = true;
+  if(s.options[s.selected].correct){
+    state.totalScore += 2;
+    state.levelScores[1] += 2;
+  }
+  renderLevel1();
+  renderTopbar();
+}
+
+/* =========================================================
+   NÍVEL 2 — Lacunas Duplas + Tradução
+   ========================================================= */
+function setupLevel2Question(idx){
+  const q = level2Data[idx];
+  state.l2 = {
+    step:'A',
+    b1options: shuffle(q.blank1.options),
+    b2options: shuffle(q.blank2.options),
+    b1selected:null, b2selected:null, checkedA:false,
+    trOptions: shuffle([{text:q.transCorrect,correct:true}, ...q.transWrong.map(w=>({text:w,correct:false}))]),
+    trSelected:null, checkedB:false
+  };
+}
+
+function blankSpanHtml(selIdx, options, correctWord, checked, num){
+  if(selIdx===null) return `<span class="blank">${num}</span>`;
+  const word = options[selIdx];
+  let cls = 'blank blank-filled';
+  if(checked) cls = 'blank ' + (word===correctWord ? 'blank-correct' : 'blank-wrong');
+  return `<span class="${cls}">${word}</span>`;
+}
+
+function renderLevel2(){
+  const q = level2Data[state.qIndex];
+  const s = state.l2;
+  const content = document.getElementById('content');
+
+  if(s.step==='A'){
+    const span1 = blankSpanHtml(s.b1selected, s.b1options, q.blank1.correct, s.checkedA, 1);
+    const span2 = blankSpanHtml(s.b2selected, s.b2options, q.blank2.correct, s.checkedA, 2);
+    const sentence = q.frBlanked.replace('[ 1 ]', span1).replace('[ 2 ]', span2);
+
+    const b1btns = s.b1options.map((w,i)=>{
+      let cls='chip-option';
+      if(s.checkedA){ if(w===q.blank1.correct) cls+=' correct'; else if(i===s.b1selected) cls+=' wrong'; }
+      else if(i===s.b1selected){ cls+=' selected'; }
+      return `<button class="${cls}" ${s.checkedA?'disabled':''} onclick="selectL2Blank(1,${i})">${w}</button>`;
+    }).join('');
+
+    const b2btns = s.b2options.map((w,i)=>{
+      let cls='chip-option';
+      if(s.checkedA){ if(w===q.blank2.correct) cls+=' correct'; else if(i===s.b2selected) cls+=' wrong'; }
+      else if(i===s.b2selected){ cls+=' selected'; }
+      return `<button class="${cls}" ${s.checkedA?'disabled':''} onclick="selectL2Blank(2,${i})">${w}</button>`;
+    }).join('');
+
+    const canCheck = s.b1selected!==null && s.b2selected!==null;
+    const btnLabel = s.checkedA ? 'Continuar' : 'Verificar Lacunas';
+    const btnOnclick = s.checkedA ? 'advanceL2Step()' : 'checkL2Blanks()';
+    const btnDisabled = !s.checkedA && !canCheck;
+
+    content.innerHTML = `
+      <div class="question-card">
+        <p class="instruction">Etapa A · Complete as lacunas</p>
+        <p class="fr-sentence">${sentence}</p>
+        <p class="chip-label">Lacuna 1</p>
+        <div class="chip-row">${b1btns}</div>
+        <p class="chip-label">Lacuna 2</p>
+        <div class="chip-row">${b2btns}</div>
+      </div>
+      <div class="footer-space"></div>
+      <button class="btn btn-block" ${btnDisabled?'disabled':''} onclick="${btnOnclick}">${btnLabel}</button>
+    `;
+  } else {
+    const trbtns = s.trOptions.map((o,i)=>{
+      let cls='option-card';
+      if(s.checkedB){ if(o.correct) cls+=' correct'; else if(i===s.trSelected) cls+=' wrong'; }
+      else if(i===s.trSelected){ cls+=' selected'; }
+      return `<button class="${cls}" ${s.checkedB?'disabled':''} onclick="selectL2Translation(${i})">${o.text}</button>`;
+    }).join('');
+
+    const btnLabel = s.checkedB ? 'Continuar' : 'Verificar Tradução';
+    const btnOnclick = s.checkedB ? 'nextQuestion()' : 'checkL2Translation()';
+    const btnDisabled = !s.checkedB && s.trSelected===null;
+
+    content.innerHTML = `
+      <div class="question-card">
+        <p class="instruction">Etapa B · Frase completa</p>
+        <p class="fr-sentence">${q.frFull}</p>
+        <p class="instruction" style="margin-top:16px;">Escolha a tradução correta</p>
+        <div class="options-grid">${trbtns}</div>
+      </div>
+      <div class="footer-space"></div>
+      <button class="btn btn-block" ${btnDisabled?'disabled':''} onclick="${btnOnclick}">${btnLabel}</button>
+    `;
+  }
+}
+
+function selectL2Blank(which, i){
+  if(state.l2.checkedA) return;
+  if(which===1) state.l2.b1selected=i; else state.l2.b2selected=i;
+  renderLevel2();
+}
+
+function checkL2Blanks(){
+  const q = level2Data[state.qIndex];
+  const s = state.l2;
+  s.checkedA = true;
+  if(s.b1options[s.b1selected]===q.blank1.correct){ state.totalScore+=1; state.levelScores[2]+=1; }
+  if(s.b2options[s.b2selected]===q.blank2.correct){ state.totalScore+=1; state.levelScores[2]+=1; }
+  renderLevel2();
+  renderTopbar();
+}
+
+function advanceL2Step(){
+  state.l2.step='B';
+  renderLevel2();
+}
+
+function selectL2Translation(i){
+  if(state.l2.checkedB) return;
+  state.l2.trSelected = i;
+  renderLevel2();
+}
+
+function checkL2Translation(){
+  const s = state.l2;
+  s.checkedB = true;
+  if(s.trOptions[s.trSelected].correct){ state.totalScore+=1.5; state.levelScores[2]+=1.5; }
+  renderLevel2();
+  renderTopbar();
+}
+
+/* =========================================================
+   NÍVEL 3 — Monte a Frase (banco de palavras)
+   ========================================================= */
+function setupLevel3Question(idx){
+  const q = level3Data[idx];
+  const bank = shuffle([...q.correctTokens, ...q.distractors]).map((w,i)=>({ id:i, word:w, used:false }));
+  state.l3 = { bank, built:[], checked:false };
+}
+
+function renderLevel3(){
+  const q = level3Data[state.qIndex];
+  const s = state.l3;
+  const builtWords = s.built.map(id=>s.bank.find(b=>b.id===id).word);
+  const isCorrect = s.checked && builtWords.join(' ')===q.correctTokens.join(' ');
+
+  const builtHtml = s.built.map(id=>{
+    const b = s.bank.find(x=>x.id===id);
+    let cls='tile placed';
+    if(s.checked) cls += isCorrect ? ' correct' : ' wrong';
+    return `<button class="${cls}" ${s.checked?'disabled':''} onclick="removeL3Tile(${b.id})">${b.word}</button>`;
+  }).join('');
+
+  const bankHtml = s.bank.filter(b=>!b.used).map(b=>{
+    return `<button class="tile" ${s.checked?'disabled':''} onclick="addL3Tile(${b.id})">${b.word}</button>`;
+  }).join('');
+
+  const canCheck = s.built.length===q.correctTokens.length;
+  const btnLabel = s.checked ? 'Continuar' : 'Verificar';
+  const btnOnclick = s.checked ? 'nextQuestion()' : 'checkL3()';
+  const btnDisabled = !s.checked && !canCheck;
+
+  const gabarito = (s.checked && !isCorrect)
+    ? `<p class="gabarito">Ordem correta: <strong>${q.correctTokens.join(' ')}</strong></p>`
+    : '';
+
+  document.getElementById('content').innerHTML = `
+    <div class="question-card">
+      <p class="instruction">Monte a frase em francês</p>
+      <p class="pt-sentence">${q.pt}</p>
+      <div class="build-row ${s.checked ? (isCorrect?'row-correct':'row-wrong') : ''}">
+        ${builtHtml || '<span class="build-placeholder">Toque nas palavras abaixo, na ordem certa</span>'}
+      </div>
+      ${gabarito}
+      <div class="bank-row">${bankHtml}</div>
+    </div>
+    <div class="footer-space"></div>
+    <button class="btn btn-block" ${btnDisabled?'disabled':''} onclick="${btnOnclick}">${btnLabel}</button>
+  `;
+}
+
+function addL3Tile(id){
+  const s = state.l3;
+  if(s.checked) return;
+  const item = s.bank.find(b=>b.id===id);
+  if(item.used) return;
+  item.used = true;
+  s.built.push(id);
+  renderLevel3();
+}
+
+function removeL3Tile(id){
+  const s = state.l3;
+  if(s.checked) return;
+  const item = s.bank.find(b=>b.id===id);
+  item.used = false;
+  s.built = s.built.filter(x=>x!==id);
+  renderLevel3();
+}
+
+function checkL3(){
+  const q = level3Data[state.qIndex];
+  const s = state.l3;
+  s.checked = true;
+  const builtWords = s.built.map(id=>s.bank.find(b=>b.id===id).word);
+  if(builtWords.join(' ')===q.correctTokens.join(' ')){
+    state.totalScore += 4.5;
+    state.levelScores[3] += 4.5;
+  }
+  renderLevel3();
+  renderTopbar();
+}
+
+/* =========================================================
+   INICIALIZAÇÃO
+   ========================================================= */
+render();
+</script>
+</body>
+</html>
