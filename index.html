@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="color-scheme" content="light only">
 <meta name="theme-color" content="#F7F9FA">
-<title>GALOLINGO — ESCOLA</title>
+<title>GALOLINGO — LES VACANCES</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -439,9 +439,10 @@
     background: var(--laranja-escuro);
     border: 2px solid var(--laranja-dark);
     border-bottom-width: 4px;
-    border-radius: 9px;
-    min-width: 32px;
+    border-radius: 999px;
+    min-width: 34px;
     height: 36px;
+    padding: 0 8px;
     cursor: pointer;
     color: #ffffff !important;
     display: flex;
@@ -486,225 +487,265 @@
 
 <script>
 /* =========================================================
-   DADOS DOS NÍVEIS
+   DADOS DOS NÍVEIS (LES VACANCES)
    ========================================================= */
 
 const level1Data = [
-  { frBlanked:"Lucas prend son [ 1 ] à dos pour aller dans la classe.",
-    frFull:"Lucas prend son sac à dos pour aller dans la classe.",
-    audio:"audios-monecole/Lucas, prend, son, sac à dos, pour, aller, dans, la, classe.mp3",
-    blank:{ options:["sac","lac","bac"], correct:"sac" },
-    transCorrect:"Lucas pega sua mochila para ir na sala.",
-    transWrong:["Lucas pega seu lápis para ir na sala.","Lucas pega sua mochila para ir ao pátio."] },
-  { frBlanked:"L'enseignant entre dans la classe avec un [ 1 ] d'histoire.",
-    frFull:"L'enseignant entre dans la classe avec un livre d'histoire.",
-    audio:"audios-monecole/L'enseignant entre, dans, la, classe, avec un, livre, d'histoire.mp3",
-    blank:{ options:["livre","lièvre","livret"], correct:"livre" },
-    transCorrect:"O professor entra na sala com um livro de história.",
-    transWrong:["O professor entra na sala com um caderno de história.","O aluno entra na sala com um livro de história."] },
-  { frBlanked:"Il y a une [ 1 ] et un crayon de couleur sur la table.",
-    frFull:"Il y a une gomme et un crayon de couleur sur la table.",
-    audio:"audios-monecole/Il y a, une, gomme, et un, crayon, de, couleur, sur, la, table.mp3",
-    blank:{ options:["gomme","pomme","somme"], correct:"gomme" },
-    transCorrect:"Há uma borracha e um lápis de cor em cima da mesa.",
-    transWrong:["Há uma borracha e uma caneta de cor em cima da mesa.","Há uma borracha e um lápis de cor embaixo da mesa."] },
-  { frBlanked:"Sophie aime utiliser un surligneur [ 1 ] pour marquer les lignes importantes.",
-    frFull:"Sophie aime utiliser un surligneur jaune pour marquer les lignes importantes.",
-    audio:"audios-monecole/Sophie, aime utiliser, un, surligneur, jaune, pour, marquer, les, lignes importantes.mp3",
-    blank:{ options:["jaune","faune","jeune"], correct:"jaune" },
-    transCorrect:"Sophie gosta de usar um marca-texto amarelo para marcar as linhas importantes.",
-    transWrong:["Sophie gosta de usar uma caneta amarela para marcar as linhas importantes.","Sophie gosta de usar um marca-texto azul para marcar as linhas importantes."] },
-  { frBlanked:"Pendant la récréation, les enfants vont jouer dans la [ 1 ].",
-    frFull:"Pendant la récréation, les enfants vont jouer dans la cour.",
-    audio:"audios-monecole/Pendant, la, récréation, les enfants vont, jouer, dans, la, cour.mp3",
-    blank:{ options:["cour","cours","court"], correct:"cour" },
-    transCorrect:"Durante o recreio, as crianças vão brincar no pátio.",
-    transWrong:["Durante a aula, as crianças vão brincar no pátio.","Durante o recreio, os professores vão brincar no pátio."] },
-  { frBlanked:"Il écrit la date sur le tableau avec de la [ 1 ].",
-    frFull:"Il écrit la date sur le tableau avec de la craie.",
-    audio:"audios-monecole/Il écrit, la, date, sur, le, tableau, avec, de, la, craie.mp3",
-    blank:{ options:["craie","vrai","frais"], correct:"craie" },
-    transCorrect:"Ele escreve a data no quadro com giz.",
-    transWrong:["Ele escreve o nome no quadro com giz.","Ele apaga a data no quadro com giz."] },
-  { frBlanked:"Elle range les ciseaux et la [ 1 ] dans la trousse.",
-    frFull:"Elle range les ciseaux et la colle dans la trousse.",
-    audio:"audios-monecole/Elle, range, les ciseaux, et, la, colle, dans, la, trousse.mp3",
-    blank:{ options:["colle","molle","folle"], correct:"colle" },
-    transCorrect:"Ela guarda a tesoura e a cola no estojo.",
-    transWrong:["Ela guarda a régua e a cola no estojo.","Ela guarda a tesoura e a cola na mochila."] },
-  { frBlanked:"Les garçons font du [ 1 ] dans le gymnase avec l'enseignant.",
-    frFull:"Les garçons font du sport dans le gymnase avec l'enseignant.",
-    audio:"audios-monecole/Les garçons font, du, sport, dans, le, gymnase, avec, l'enseignant.mp3",
-    blank:{ options:["sport","fort","port"], correct:"sport" },
-    transCorrect:"Os meninos fazem esporte na quadra com o professor.",
-    transWrong:["As meninas fazem esporte na quadra com o professor.","Os meninos fazem esporte na biblioteca com o professor."] },
-  { frBlanked:"On va à la cantine pour prendre le repas après la [ 1 ].",
-    frFull:"On va à la cantine pour prendre le repas après la classe.",
-    audio:"audios-monecole/On va à, la, cantine, pour, prendre, le, repas, après, la, classe.mp3",
-    blank:{ options:["classe","glace","tasse"], correct:"classe" },
-    transCorrect:"A gente vai à cantina para pegar a refeição depois da aula.",
-    transWrong:["A gente vai à cantina para pegar a refeição antes da aula.","A gente vai à biblioteca para pegar a refeição depois da aula."] },
-  { frBlanked:"Pour l'instant, les filles dessinent sur une [ 1 ] de papier.",
-    frFull:"Pour l'instant, les filles dessinent sur une feuille de papier.",
-    audio:"audios-monecole/Pour, l'instant, les filles dessinent, sur, une feuille, de, papier.mp3",
-    blank:{ options:["feuille","veille","feutre"], correct:"feuille" },
-    transCorrect:"Por enquanto, as meninas desenham em uma folha de papel.",
-    transWrong:["Por enquanto, os meninos desenham em uma folha de papel.","Por enquanto, as meninas escrevem em uma folha de papel."] }
+  { fr:"Il fait chaud et le soleil est très joli.",
+    correct:"Faz calor e o sol é muito bonito.",
+    wrong:[
+      "Faz frio e o sol é muito bonito.",
+      "Faz calor e a lua é muito bonita.",
+      "Fez calor e o sol estava muito bonito.",
+      "Faz calor e o sol é muito feio."
+    ],
+    audio:"audio-lesvacances/Il fait chaud et le soleil est très joli.mp3"
+  },
+  { fr:"Je vais à la plage l'après-midi avec mon frère.",
+    correct:"Eu vou à praia à tarde com meu irmão.",
+    wrong:[
+      "Eu vou à praia de manhã com meu irmão.",
+      "Eu vou à praia à tarde com minha irmã.",
+      "Eu fui à praia à tarde com meu irmão.",
+      "Eu vou ao restaurante à tarde com meu irmão."
+    ],
+    audio:"audio-lesvacances/Je vais à la plage l'après-midi avec mon frère.mp3"
+  },
+  { fr:"La famille aime faire des promenades le soir.",
+    correct:"A família gosta de fazer passeios à noite.",
+    wrong:[
+      "A família gosta de fazer passeios de manhã.",
+      "A família odeia fazer passeios à noite.",
+      "O amigo gosta de fazer passeios à noite.",
+      "A família gosta de nadar à noite."
+    ],
+    audio:"audio-lesvacances/La famille aime faire des promenades le soir.mp3"
+  },
+  { fr:"Nous mangeons du chocolat pendant le soir.",
+    correct:"Nós comemos chocolate durante a noite.",
+    wrong:[
+      "Nós bebemos chocolate durante a noite.",
+      "Nós comemos chocolate durante a tarde.",
+      "Nós comemos sorvete durante a noite.",
+      "Eles comem chocolate durante a noite."
+    ],
+    audio:"audio-lesvacances/Nous mangeons du chocolat pendant le soir.mp3"
+  },
+  { fr:"Mon frère adore boire du jus d'orange le matin.",
+    correct:"Meu irmão adora beber suco de laranja de manhã.",
+    wrong:[
+      "Meu irmão adora beber suco de laranja à noite.",
+      "Minha irmã adora beber suco de laranja de manhã.",
+      "Meu irmão adora comer suco de laranja de manhã.",
+      "Meu irmão detesta beber suco de laranja de manhã."
+    ],
+    audio:"audio-lesvacances/Mon frère adore boire du jus d'orange le matin.mp3"
+  },
+  { fr:"Le soir, il fait frais dans le petit village.",
+    correct:"De noite, está fresco no pequeno vilarejo.",
+    wrong:[
+      "De manhã, está fresco no pequeno vilarejo.",
+      "De noite, está quente no pequeno vilarejo.",
+      "De noite, está fresco na grande cidade.",
+      "De noite, estava fresco no pequeno vilarejo."
+    ],
+    audio:"audio-lesvacances/Le soir, il fait frais dans le petit village.mp3"
+  },
+  { fr:"J'aime lire un livre dans le petit restaurant.",
+    correct:"Eu gosto de ler um livro no pequeno restaurante.",
+    wrong:[
+      "Eu gosto de escrever um livro no pequeno restaurante.",
+      "Eu gosto de ler um jornal no pequeno restaurante.",
+      "Eu gosto de ler um livro no grande restaurante.",
+      "Eu odeio ler um livro no pequeno restaurante."
+    ],
+    audio:"audio-lesvacances/J'aime lire un livre dans le petit restaurant.mp3"
+  },
+  { fr:"Pour se reposer, il va à la plage le soir.",
+    correct:"Para descansar, ele vai à praia à noite.",
+    wrong:[
+      "Para descansar, ele vai à praia de manhã.",
+      "Para descansar, ela vai à praia à noite.",
+      "Para se divertir, ele vai à praia à noite.",
+      "Para descansar, ele vai à montanha à noite."
+    ],
+    audio:"audio-lesvacances/Pour se reposer, il va à la plage le soir.mp3"
+  },
+  { fr:"Le matin, j'aime boire du jus d'orange frais.",
+    correct:"De manhã, eu gosto de beber suco de laranja natural.",
+    wrong:[
+      "À noite, eu gosto de beber suco de laranja natural.",
+      "De manhã, eu gosto de beber suco de maçã natural.",
+      "De manhã, eu gosto de comer suco de laranja natural.",
+      "De manhã, eu detesto beber suco de laranja natural."
+    ],
+    audio:"audio-lesvacances/Le matin, j'aime boire du jus d'orange frais.mp3"
+  },
+  { fr:"Mon frère aime nager dans la mer avec la famille.",
+    correct:"Meu irmão gosta de nadar no mar com a família.",
+    wrong:[
+      "Meu irmão gosta de nadar no rio com a família.",
+      "Minha irmã gosta de nadar no mar com a família.",
+      "Meu irmão gosta de caminhar no mar com a família.",
+      "Meu irmão odeia nadar no mar com a família."
+    ],
+    audio:"audio-lesvacances/Mon frère aime nager dans la mer avec la famille.mp3"
+  }
 ];
 
 const level2Data = [
-  { frBlanked:"Lucas [ 1 ] un taille-crayon parce que la mine est [ 2 ].",
-    frFull:"Lucas cherche un taille-crayon parce que la mine est cassée.",
-    audio:"audios-monecole/Lucas, cherche, un taille-crayon, parce que, la, mine, est cassée.mp3",
-    blank1:{ options:["cherche","perche","berce"], correct:"cherche" },
-    blank2:{ options:["cassée","passée","lassée"], correct:"cassée" },
-    transCorrect:"Lucas procura um apontador porque a ponta está quebrada.",
-    transWrong:["Lucas procura uma borracha porque a ponta está quebrada.","Lucas procura um apontador porque a ponta está nova."] },
-  { frBlanked:"Ils utilisent l'[ 1 ] à la bibliothèque pour faire des [ 2 ].",
-    frFull:"Ils utilisent l'ordinateur à la bibliothèque pour faire des recherches.",
-    audio:"audios-monecole/Ils utilisent, l'ordinateur à, la, bibliothèque, pour, faire, des recherches.mp3",
-    blank1:{ options:["ordinateur","orateur","radiateur"], correct:"ordinateur" },
-    blank2:{ options:["recherches","brèches","tranches"], correct:"recherches" },
-    transCorrect:"Eles usam o computador na biblioteca para fazer pesquisas.",
-    transWrong:["Eles usam o computador na sala de aula para fazer pesquisas.","Eles usam o livro na biblioteca para fazer pesquisas."] },
-  { frBlanked:"L'enseignant pose le [ 1 ] et la chemise sur son [ 2 ].",
-    frFull:"L'enseignant pose le classeur et la chemise sur son bureau.",
-    audio:"audios-monecole/L'enseignant pose, le, classeur, et, la, chemise, sur, son bureau.mp3",
-    blank1:{ options:["classeur","chasseur","danseur"], correct:"classeur" },
-    blank2:{ options:["bureau","bateau","cadeau"], correct:"bureau" },
-    transCorrect:"O professor coloca o fichário e a pasta sobre sua mesa.",
-    transWrong:["O professor coloca o livro e a pasta sobre sua mesa.","O aluno coloca o fichário e a pasta sobre sua mesa."] },
-  { frBlanked:"Elle préfère [ 1 ] des lignes droites avec une [ 2 ].",
-    frFull:"Elle préfère tracer des lignes droites avec une règle.",
-    audio:"audios-monecole/Elle, préfère, tracer, des lignes, droites, avec, une règle.mp3",
-    blank1:{ options:["tracer","placer","chasser"], correct:"tracer" },
-    blank2:{ options:["règle","aigle","zèle"], correct:"règle" },
-    transCorrect:"Ela prefere traçar linhas retas com uma régua.",
-    transWrong:["Ela prefere traçar linhas curvas com uma régua.","Ela prefere apagar linhas retas com uma régua."] },
-  { frBlanked:"Les amis [ 1 ] ensemble vers le bureau du [ 2 ].",
-    frFull:"Les amis marchent ensemble vers le bureau du directeur.",
-    audio:"audios-monecole/Les amis marchent, ensemble, vers, le, bureau, du, directeur.mp3",
-    blank1:{ options:["marchent","marquent","manquent"], correct:"marchent" },
-    blank2:{ options:["directeur","correcteur","inspecteur"], correct:"directeur" },
-    transCorrect:"Os amigos andam juntos em direção à diretoria.",
-    transWrong:["Os amigos correm juntos em direção à diretoria.","Os professores andam juntos em direção à diretoria."] },
-  { frBlanked:"Il a besoin d'un stylo [ 1 ] et d'un feutre [ 2 ] pour écrire.",
-    frFull:"Il a besoin d'un stylo bleu et d'un feutre noir pour écrire.",
-    audio:"audios-monecole/Il a, besoin, d'un stylo, bleu, et, d'un feutre, noir, pour, écrire.mp3",
-    blank1:{ options:["bleu","peu","jeu"], correct:"bleu" },
-    blank2:{ options:["noir","soir","voir"], correct:"noir" },
-    transCorrect:"Ele precisa de uma caneta azul e de uma canetinha preta para escrever.",
-    transWrong:["Ele precisa de um lápis azul e de uma canetinha preta para escrever.","Ele precisa de uma caneta vermelha e de uma canetinha preta para escrever."] },
-  { frBlanked:"C'est le [ 1 ] de français de Sophie sur la [ 2 ].",
-    frFull:"C'est le cahier de français de Sophie sur la chaise.",
-    audio:"audios-monecole/C'est, le, cahier, de, français, de, Sophie, sur, la, chaise.mp3",
-    blank1:{ options:["cahier","papier","métier"], correct:"cahier" },
-    blank2:{ options:["chaise","fraise","braise"], correct:"chaise" },
-    transCorrect:"É o caderno de francês de Sophie sobre a cadeira.",
-    transWrong:["É o livro de francês de Sophie sobre a cadeira.","É o caderno de inglês de Sophie sobre a cadeira."] },
-  { frBlanked:"Pendant l'Éducation Physique et Sportive, on [ 1 ] du sport [ 2 ].",
-    frFull:"Pendant l'Éducation Physique et Sportive, on fait du sport ensemble.",
-    audio:"audios-monecole/Pendant, l'Éducation, Physique, et, Sportive, on fait, du, sport, ensemble.mp3",
-    blank1:{ options:["fait","lait","sait"], correct:"fait" },
-    blank2:{ options:["ensemble","ressemble","assemble"], correct:"ensemble" },
-    transCorrect:"Durante a Educação Física, a gente faz esporte juntos.",
-    transWrong:["Durante a Educação Física, a gente faz esporte sozinho.","Durante o recreio, a gente faz esporte juntos."] },
-  { frBlanked:"Elle range ses [ 1 ] dans le sac à dos [ 2 ] la chaise.",
-    frFull:"Elle range ses affaires dans le sac à dos derrière la chaise.",
-    audio:"audios-monecole/Elle, range, ses affaires, dans, le, sac à dos, derrière, la, chaise.mp3",
-    blank1:{ options:["affaires","affiches","affamées"], correct:"affaires" },
-    blank2:{ options:["derrière","première","lumière"], correct:"derrière" },
-    transCorrect:"Ela guarda seus pertences na mochila atrás da cadeira.",
-    transWrong:["Ela guarda seus pertences na mochila na frente da cadeira.","Ele guarda seus pertences na mochila atrás da cadeira."] },
-  { frBlanked:"L'enseignant va [ 1 ] les [ 2 ] dans le cahier.",
-    frFull:"L'enseignant va corriger les erreurs dans le cahier.",
-    audio:"audios-monecole/L'enseignant va, corriger, les erreurs, dans, le, cahier.mp3",
-    blank1:{ options:["corriger","diriger","obliger"], correct:"corriger" },
-    blank2:{ options:["erreurs","chaleurs","couleurs"], correct:"erreurs" },
-    transCorrect:"O professor vai corrigir os erros no caderno.",
-    transWrong:["O professor vai corrigir os erros no quadro.","O aluno vai corrigir os erros no caderno."] }
+  { frBlanked:"Les [ 1 ] dans le sud de la France sont [ 2 ].",
+    frFull:"Les vacances dans le sud de la France sont magnifiques.",
+    audio:"audio-lesvacances/Les vacances dans le sud de la France sont magnifiques.mp3",
+    blank1:{ options:["vacances","valises","voitures"], correct:"vacances" },
+    blank2:{ options:["magnifiques","fatigantes","chères"], correct:"magnifiques" },
+    transCorrect:"As férias no sul da França são magníficas.",
+    transWrong:["As férias no norte da França são magníficas.","As malas no sul da França são magníficas."] },
+  { frBlanked:"Les [ 1 ] sont frais, mais l'après-midi il fait [ 2 ].",
+    frFull:"Les matins sont frais, mais l'après-midi il fait chaud.",
+    audio:"audio-lesvacances/Les matins sont frais, mais l'après-midi il fait chaud.mp3",
+    blank1:{ options:["matins","soirs","jours"], correct:"matins" },
+    blank2:{ options:["chaud","froid","beau"], correct:"chaud" },
+    transCorrect:"As manhãs são frescas, mas à tarde faz calor.",
+    transWrong:["As noites são frescas, mas à tarde faz calor.","As manhãs são frescas, mas à tarde faz frio."] },
+  { frBlanked:"Les petits [ 1 ] sont magnifiques et nous y allons [ 2 ] ensemble.",
+    frFull:"Les petits villages sont magnifiques et nous y allons souvent ensemble.",
+    audio:"audio-lesvacances/Les petits villages sont magnifiques et nous y allons souvent ensemble.mp3",
+    blank1:{ options:["villages","restaurants","marchés"], correct:"villages" },
+    blank2:{ options:["souvent","rarement","toujours"], correct:"souvent" },
+    transCorrect:"As vilas pequenas são magníficas e nós vamos lá frequentemente juntos.",
+    transWrong:["Os restaurantes pequenos são magníficos e nós vamos lá frequentemente juntos.","As vilas pequenas são magníficas e nós vamos lá raramente juntos."] },
+  { frBlanked:"En [ 1 ], la famille aime [ 2 ] et se reposer.",
+    frFull:"En juillet, la famille aime nager et se reposer.",
+    audio:"audio-lesvacances/En juillet, la famille aime nager et se reposer.mp3",
+    blank1:{ options:["juillet","décembre","janvier"], correct:"juillet" },
+    blank2:{ options:["nager","voyager","manger"], correct:"nager" },
+    transCorrect:"Em julho, a família gosta de nadar e descansar.",
+    transWrong:["Em dezembro, a família gosta de nadar e descansar.","Em julho, a família gosta de viajar e descansar."] },
+  { frBlanked:"Il [ 1 ] les glaces au chocolat du [ 2 ].",
+    frFull:"Il adore les glaces au chocolat du village.",
+    audio:"audio-lesvacances/Il adore les glaces au chocolat du village.mp3",
+    blank1:{ options:["adore","déteste","cherche"], correct:"adore" },
+    blank2:{ options:["village","restaurant","marché"], correct:"village" },
+    transCorrect:"Ele adora os sorvetes de chocolate da vila.",
+    transWrong:["Ele detesta os sorvetes de chocolate da vila.","Ele adora os sorvetes de chocolate do restaurante."] },
+  { frBlanked:"Mon [ 1 ] adore manger de la glace au chocolat à la [ 2 ].",
+    frFull:"Mon frère adore manger de la glace au chocolat à la plage.",
+    audio:"audio-lesvacances/Mon frère adore manger de la glace au chocolat à la plage.mp3",
+    blank1:{ options:["frère","père","ami"], correct:"frère" },
+    blank2:{ options:["plage","montagne","mer"], correct:"plage" },
+    transCorrect:"Meu irmão adora comer sorvete de chocolate na praia.",
+    transWrong:["Meu pai adora comer sorvete de chocolate na praia.","Meu irmão adora comer sorvete de chocolate na montanha."] },
+  { frBlanked:"Ce temps est [ 1 ] pour [ 2 ] et s'amuser en France.",
+    frFull:"Ce temps est parfait pour voyager et s'amuser en France.",
+    audio:"audio-lesvacances/Ce temps est parfait pour voyager et s'amuser en France.mp3",
+    blank1:{ options:["parfait","mauvais","difficile"], correct:"parfait" },
+    blank2:{ options:["voyager","travailler","étudier"], correct:"voyager" },
+    transCorrect:"Esse tempo é perfeito para viajar e se divertir na França.",
+    transWrong:["Esse tempo é ruim para viajar e se divertir na França.","Esse tempo é perfeito para trabalhar e se divertir na França."] },
+  { frBlanked:"J'adore [ 1 ] un livre à la mer pour me [ 2 ].",
+    frFull:"J'adore lire un livre à la mer pour me reposer.",
+    audio:"audio-lesvacances/J'adore lire un livre à la mer pour me reposer.mp3",
+    blank1:{ options:["lire","acheter","écrire"], correct:"lire" },
+    blank2:{ options:["reposer","promener","amuser"], correct:"reposer" },
+    transCorrect:"Eu adoro ler um livro no mar para descansar.",
+    transWrong:["Eu adoro comprar um livro no mar para descansar.","Eu adoro ler um livro no mar para passear."] },
+  { frBlanked:"Pendant les [ 1 ], nous allons dans le [ 2 ] de la France.",
+    frFull:"Pendant les vacances, nous allons dans le sud de la France.",
+    audio:"audio-lesvacances/Pendant les vacances, nous allons dans le sud de la France.mp3",
+    blank1:{ options:["vacances","cours","réunions"], correct:"vacances" },
+    blank2:{ options:["sud","nord","centre"], correct:"sud" },
+    transCorrect:"Durante as férias, nós vamos para o sul da França.",
+    transWrong:["Durante as aulas, nós vamos para o sul da França.","Durante as férias, nós vamos para o norte da França."] },
+  { frBlanked:"Nous faisons des [ 1 ] dans de très [ 2 ] petits villages.",
+    frFull:"Nous faisons des promenades dans de très jolis petits villages.",
+    audio:"audio-lesvacances/Nous faisons des promenades dans de très jolis petits villages.mp3",
+    blank1:{ options:["promenades","courses","photos"], correct:"promenades" },
+    blank2:{ options:["jolis","vieux","grands"], correct:"jolis" },
+    transCorrect:"Nós fazemos passeios em vilas pequenas e muito bonitas.",
+    transWrong:["Nós fazemos compras em vilas pequenas e muito bonitas.","Nós fazemos passeios em vilas pequenas e muito antigas."] }
 ];
 
 const level3Data = [
-  { pt:"As crianças entram na sala dos professores com o professor.",
-    transWrong:["As crianças entram na biblioteca com o professor.","Os professores entram na sala de aula com os alunos."],
-    frFull:"Les enfants entrent dans la salle des maîtres avec l'enseignant.",
-    audio:"audios-monecole/Les enfants entrent, dans, la, salle, des, maîtres, avec, l'enseignant.mp3",
-    lcWord:"la salle des maîtres", lcOptions:["la salle des maîtres", "la bibliothèque", "le gymnase"],
-    montarWord:"l'enseignant",
-    template:"Les enfants entrent dans [LC] avec [MONTAR]." },
+  { pt:"À noite, a família vai ao restaurante para comer juntos.",
+    transWrong:["À noite, a família vai ao cinema para comer juntos.","De manhã, a família vai ao restaurante para comer juntos."],
+    frFull:"Le soir, la famille va au restaurant pour manger ensemble.",
+    audio:"audio-lesvacances/Le soir, la famille va au restaurant pour manger ensemble.mp3",
+    lcWord:"restaurant", lcOptions:["restaurant", "village", "marché"],
+    montarWord:"ensemble",
+    template:"Le soir, la famille va au [LC] pour manger [MONTAR]." },
 
-  { pt:"Hoje, a gente vai estudar o livro de história na biblioteca.",
-    transWrong:["Hoje, a gente vai ler o caderno de matemática na biblioteca.","Amanhã, a gente vai estudar o livro de história na sala."],
-    frFull:"Aujourd'hui, on va étudier le livre d'histoire à la bibliothèque.",
-    audio:"audios-monecole/Aujourd'hui, on va étudier, le, livre, d'histoire à, la, bibliothèque.mp3",
-    lcWord:"livre", lcOptions:["livre", "cahier", "stylos"],
-    montarWord:"bibliothèque",
-    template:"Aujourd'hui, on va étudier le [LC] d'histoire à la [MONTAR]." },
+  { pt:"Nós visitamos restaurantes locais e nós comemos muito bem.",
+    transWrong:["Nós visitamos restaurantes locais e nós bebemos muito bem.","Nós visitamos lojas locais e nós comemos muito bem."],
+    frFull:"Nous visitons des restaurants locaux et nous mangeons très bien.",
+    audio:"audio-lesvacances/Nous visitons des restaurants locaux et nous mangeons très bien.mp3",
+    lcWord:"locaux", lcOptions:["locaux", "grands", "petits"],
+    montarWord:"mangeons",
+    template:"Nous visitons des restaurants [LC] et nous [MONTAR] très bien." },
 
-  { pt:"Ele coloca um computador grande perto da mesa.",
-    transWrong:["Ele coloca um computador pequeno embaixo da mesa.","Ela coloca um livro grande perto da cadeira."],
-    frFull:"Il installe un grand ordinateur près de la table.",
-    audio:"audios-monecole/Il installe, un grand ordinateur, près, de, la, table.mp3",
-    lcWord:"table", lcOptions:["table", "chaise", "trousse"],
-    montarWord:"ordinateur",
-    template:"Il installe un grand [MONTAR] près de la [LC]." },
+  { pt:"Nós visitamos vilas muito bonitas durante as férias.",
+    transWrong:["Nós visitamos cidades muito bonitas durante as férias.","Nós visitamos vilas muito bonitas durante o ano."],
+    frFull:"Nous visitons de très jolis villages pendant les vacances.",
+    audio:"audio-lesvacances/Nous visitons de très jolis villages pendant les vacances.mp3",
+    lcWord:"jolis", lcOptions:["jolis", "vieux", "beaux"],
+    montarWord:"vacances",
+    template:"Nous visitons de très [LC] villages pendant les [MONTAR]." },
 
-  { pt:"Às vezes, as crianças visitam a secretaria para perguntar a hora.",
-    transWrong:["Às vezes, os alunos entram na secretaria para pegar o papel.","Sempre, as crianças visitam a diretoria para pedir ajuda."],
-    frFull:"Parfois, les enfants visitent le secrétariat pour demander l'heure.",
-    audio:"audios-monecole/Parfois, les enfants visitent, le, secrétariat, pour, demander, l'heure.mp3",
-    lcWord:"visitent", lcOptions:["visitent", "quittent", "habitent"],
-    montarWord:"secrétariat",
-    template:"Parfois, les enfants [LC] le [MONTAR] pour demander l'heure." },
+  { pt:"O tempo está perfeito para fazer passeios juntos.",
+    transWrong:["O tempo está perfeito para viajar juntos.","O dia está perfeito para fazer passeios juntos."],
+    frFull:"Le temps est parfait pour faire des promenades ensemble.",
+    audio:"audio-lesvacances/Le temps est parfait pour faire des promenades ensemble.mp3",
+    lcWord:"parfait", lcOptions:["parfait", "mauvais", "frais"],
+    montarWord:"promenades",
+    template:"Le temps est [LC] pour faire des [MONTAR] ensemble." },
 
-  { pt:"As crianças adoram ler um livro depois da refeição.",
-    transWrong:["As crianças odeiam ler um livro depois da refeição.","Os alunos adoram escrever uma história antes do recreio."],
-    frFull:"Les enfants adorent lire un livre après le repas.",
-    audio:"audios-monecole/Les enfants adorent, lire, un livre, après, le, repas.mp3",
-    lcWord:"adorent", lcOptions:["adorent", "détestent", "oubliant"],
-    montarWord:"repas",
-    template:"Les enfants [LC] lire un livre après le [MONTAR]." },
+  { pt:"Nós vamos ao restaurante para beber suco de laranja fresco.",
+    transWrong:["Nós vamos ao restaurante para comer suco de laranja fresco.","Nós vamos à praia para beber suco de laranja fresco."],
+    frFull:"Nous allons au restaurant pour boire du jus d'orange frais.",
+    audio:"audio-lesvacances/Nous allons au restaurant pour boire du jus d'orange frais.mp3",
+    lcWord:"boire", lcOptions:["boire", "manger", "prendre"],
+    montarWord:"orange",
+    template:"Nous allons au restaurant pour [LC] du jus d'[MONTAR] frais." },
 
-  { pt:"Os meninos e as meninas vão aos banheiros durante o recreio.",
-    transWrong:["Os meninos e as meninas vão à cantina durante o recreio.","Os professores vão aos banheiros depois da aula."],
-    frFull:"Les garçons et les filles vont aux toilettes pendant la récréation.",
-    audio:"audios-monecole/Les garçons et, les filles vont aux toilettes, pendant, la, récréation.mp3",
-    lcWord:"filles", lcOptions:["filles", "mères", "sœurs"],
-    montarWord:"toilettes",
-    template:"Les garçons et les [LC] vont aux [MONTAR] pendant la récréation." },
+  { pt:"Meu irmão e a família sempre se divertem no mar.",
+    transWrong:["Meu irmão e a família nunca se divertem no mar.","Minha irmã e a família sempre se divertem no mar."],
+    frFull:"Mon frère et la famille s'amusent toujours à la mer.",
+    audio:"audio-lesvacances/Mon frère et la famille s'amusent toujours à la mer.mp3",
+    lcWord:"famille", lcOptions:["famille", "maison", "plage"],
+    montarWord:"s'amusent",
+    template:"Mon frère et la [LC] [MONTAR] toujours à la mer." },
 
-  { pt:"O menino escreve na agenda com um giz de cera.",
-    transWrong:["O menino desenha no caderno com uma canetinha.","A menina escreve na agenda com um lápis preto."],
-    frFull:"Le garçon écrit dans l'agenda avec un crayon de cire.",
-    audio:"audios-monecole/Le, garçon écrit, dans, l'agenda, avec, un crayon, de, cire.mp3",
-    lcWord:"écrit", lcOptions:["écrit", "lit", "dessine"],
-    montarWord:"l'agenda",
-    template:"Le garçon [LC] dans [MONTAR] avec un crayon de cire." },
+  { pt:"À tarde, faz calor e o sol está maravilhoso.",
+    transWrong:["De manhã, faz calor e o sol está maravilhoso.","À tarde, faz frio e o sol está maravilhoso."],
+    frFull:"L'après-midi, il fait chaud et le soleil est magnifique.",
+    audio:"audio-lesvacances/L'après-midi, il fait chaud et le soleil est magnifique.mp3",
+    lcWord:"chaud", lcOptions:["chaud", "frais", "froid"],
+    montarWord:"soleil",
+    template:"L'après-midi, il fait [LC] et le [MONTAR] est magnifique." },
 
-  { pt:"As meninas gostam de brincar com os amigos perto do ginásio.",
-    transWrong:["As meninas gostam de correr com os amigos perto da sala.","Os meninos gostam de brincar com os amigos longe do ginásio."],
-    frFull:"Les filles aiment jouer avec les amis près du gymnase.",
-    audio:"audios-monecole/Les filles aiment jouer, avec, les amis, près, du, gymnase.mp3",
-    lcWord:"aiment", lcOptions:["aiment", "marchent", "mangent"],
-    montarWord:"gymnase",
-    template:"Les filles [LC] jouer avec les amis près du [MONTAR]." },
+  { pt:"É uma estação magnífica para viajar no sul.",
+    transWrong:["É um dia magnífico para viajar no sul.","É uma estação magnífica para trabalhar no sul."],
+    frFull:"C'est une saison magnifique pour voyager dans le sud.",
+    audio:"audio-lesvacances/C'est une saison magnifique pour voyager dans le sud.mp3",
+    lcWord:"saison", lcOptions:["saison", "région", "maison"],
+    montarWord:"voyager",
+    template:"C'est une [LC] magnifique pour [MONTAR] dans le sud." },
 
-  { pt:"Sophie tem um marca-texto amarelo, mas Lucas prefere a canetinha preta.",
-    transWrong:["Sophie tem uma caneta amarela, mas Lucas prefere o marca-texto preto.","Sophie tem um marca-texto azul, mas Lucas prefere a canetinha vermelha."],
-    frFull:"Sophie a un surligneur jaune mais Lucas préfère le feutre noir.",
-    audio:"audios-monecole/Sophie, a, un surligneur, jaune, mais, Lucas, préfère, le, feutre, noir.mp3",
-    lcWord:"surligneur", lcOptions:["surligneur", "classeur", "cahier"],
-    montarWord:"feutre",
-    template:"Sophie a un [LC] jaune mais Lucas préfère le [MONTAR] noir." },
+  { pt:"A cada ano, nós viajamos juntos e nos divertimos muito.",
+    transWrong:["A cada ano, nós trabalhamos juntos e nos divertimos muito.","A cada mês, nós viajamos juntos e nos divertimos muito."],
+    frFull:"Chaque année, nous voyageons ensemble et nous nous amusons beaucoup.",
+    audio:"audio-lesvacances/Chaque année, nous voyageons ensemble et nous nous amusons beaucoup..mp3",
+    lcWord:"année", lcOptions:["année", "semaine", "saison"],
+    montarWord:"voyageons",
+    template:"Chaque [LC], nous [MONTAR] ensemble et nous nous amusons beaucoup." },
 
-  { pt:"Cada criança coloca a régua e a borracha sobre a mesa.",
-    transWrong:["Cada criança pega a régua e o estojo sobre a mesa.","Cada aluno coloca a borracha e o lápis na mochila."],
-    frFull:"Chaque enfant pose la règle et la gomme sur la table.",
-    audio:"audios-monecole/Chaque enfant pose, la, règle, et, la, gomme, sur, la, table.mp3",
-    lcWord:"pose", lcOptions:["pose", "prend", "cherche"],
-    montarWord:"règle",
-    template:"Chaque enfant [LC] la [MONTAR] et la gomme sur la table." }
+  { pt:"É a minha estação preferida porque o tempo está realmente perfeito.",
+    transWrong:["É a minha estação preferida porque o tempo está realmente ruim.","É a minha cidade preferida porque o tempo está realmente perfeito."],
+    frFull:"C'est ma saison préférée parce que le temps est vraiment parfait.",
+    audio:"audio-lesvacances/C'est ma saison préférée parce que le temps est vraiment parfait.mp3",
+    lcWord:"préférée", lcOptions:["préférée", "aimée", "adorée"],
+    montarWord:"parfait",
+    template:"C'est ma saison [LC] parce que le temps est vraiment [MONTAR]." }
 ];
 
 /* =========================================================
@@ -927,9 +968,9 @@ function homeTemplate(){
     <div class="home-card">
       <img src="images/galo.png" alt="Galo Galolingo" class="mascot-img">
       <h1>galolingo</h1>
-      <p class="home-sub">Tema: ESCOLA. Complete os 3 níveis e conquiste até <strong>100 pontos</strong>!</p>
+      <p class="home-sub">Tema: LES VACANCES. Complete os 3 níveis e conquiste até <strong>100 pontos</strong>!</p>
       <div class="level-preview">
-        <div class="level-chip"><span class="chip-num">1</span> Complete a Lacuna <span class="chip-pts">20 pts</span></div>
+        <div class="level-chip"><span class="chip-num">1</span> Tradução Direta <span class="chip-pts">20 pts</span></div>
         <div class="level-chip"><span class="chip-num">2</span> Lacunas Duplas <span class="chip-pts">35 pts</span></div>
         <div class="level-chip"><span class="chip-num">3</span> Monte & Traduza <span class="chip-pts">45 pts</span></div>
       </div>
@@ -981,7 +1022,7 @@ function finalTemplate(){
       <p class="final-score">${formatScore(total)}<span> / 100</span></p>
       <p class="home-sub">${msg}</p>
       <div class="breakdown">
-        <div class="breakdown-row"><span>Nível 1 — Lacuna</span><span>${formatScore(state.levelScores[1])} / 20</span></div>
+        <div class="breakdown-row"><span>Nível 1 — Tradução</span><span>${formatScore(state.levelScores[1])} / 20</span></div>
         <div class="breakdown-row"><span>Nível 2 — Lacunas</span><span>${formatScore(state.levelScores[2])} / 35</span></div>
         <div class="breakdown-row"><span>Nível 3 — Monte & Traduza</span><span>${formatScore(state.levelScores[3])} / 45</span></div>
       </div>
@@ -1000,104 +1041,68 @@ function blankSpanHtml(selIdx, options, correctWord, checked, num){
 }
 
 /* =========================================================
-   NÍVEL 1
+   NÍVEL 1 — Tradução Direta
    ========================================================= */
 function setupLevel1Question(idx){
   const q = level1Data[idx];
-  state.l1 = {
-    step:'A',
-    bOptions: shuffle(q.blank.options),
-    bSelected:null, checkedA:false,
-    trOptions: shuffle([{text:q.transCorrect,correct:true}, ...q.transWrong.map(w=>({text:w,correct:false}))]),
-    trSelected:null, checkedB:false
-  };
+  const opts = shuffle([
+    { text:q.correct, correct:true },
+    ...q.wrong.map(w=>({ text:w, correct:false }))
+  ]);
+  state.l1 = { options:opts, selected:null, checked:false };
 }
 
 function renderLevel1(){
   const q = level1Data[state.qIndex];
   const s = state.l1;
-  const content = document.getElementById('content');
+  const optsHtml = s.options.map((o,i)=>{
+    let cls='option-card';
+    if(s.checked){
+      if(o.correct) cls+=' correct';
+      else if(i===s.selected) cls+=' wrong';
+    } else if(i===s.selected){ cls+=' selected'; }
+    return `<button class="${cls}" style="color:#ffffff !important;" ${s.checked?'disabled':''} onclick="selectL1(${i})">${o.text}</button>`;
+  }).join('');
 
-  if(s.step==='A'){
-    const span = blankSpanHtml(s.bSelected, s.bOptions, q.blank.correct, s.checkedA, 1);
-    const sentence = q.frBlanked.replace('[ 1 ]', span);
+  const btnLabel = s.checked ? 'continuar' : 'verificar';
+  const btnDisabled = (!s.checked && s.selected===null);
+  const btnOnclick = s.checked ? 'nextQuestion()' : 'checkL1()';
 
-    const btns = s.bOptions.map((w,i)=>{
-      let cls='chip-option';
-      if(s.checkedA){ if(w===q.blank.correct) cls+=' correct'; else if(i===s.bSelected) cls+=' wrong'; }
-      else if(i===s.bSelected){ cls+=' selected'; }
-      return `<button class="${cls}" style="color:#ffffff !important;" ${s.checkedA?'disabled':''} onclick="selectL1Blank(${i})">${w}</button>`;
-    }).join('');
+  document.getElementById('content').innerHTML = `
+    <div class="question-card">
+      <p class="instruction">Traduza a frase</p>
+      ${renderAudioControls(q.audio)}
+      <p class="fr-sentence">${q.fr}</p>
+      <div class="options-grid">${optsHtml}</div>
+    </div>
+    <div class="footer-space"></div>
+    <button class="btn btn-block" style="color:#ffffff !important;" ${btnDisabled?'disabled':''} onclick="${btnOnclick}">${btnLabel}</button>
+  `;
+}
 
-    const btnLabel = s.checkedA ? 'continuar' : 'verificar lacuna';
-    const btnOnclick = s.checkedA ? 'advanceL1Step()' : 'checkL1Blank()';
-    const btnDisabled = !s.checkedA && s.bSelected===null;
+function selectL1(i){
+  if(state.l1.checked) return;
+  playSound('click');
+  state.l1.selected = i;
+  renderLevel1();
+}
 
-    content.innerHTML = `
-      <div class="question-card">
-        <p class="instruction">Complete a lacuna</p>
-        ${renderAudioControls(q.audio)}
-        <p class="fr-sentence">${sentence}</p>
-        <p class="chip-label">Lacuna</p>
-        <div class="chip-row">${btns}</div>
-      </div>
-      <div class="footer-space"></div>
-      <button class="btn btn-block" style="color:#ffffff !important;" ${btnDisabled?'disabled':''} onclick="${btnOnclick}">${btnLabel}</button>
-    `;
+function checkL1(){
+  const s = state.l1;
+  s.checked = true;
+  if(s.options[s.selected].correct){
+    state.totalScore += 2;
+    state.levelScores[1] += 2;
+    playSound('ok');
   } else {
-    const trbtns = s.trOptions.map((o,i)=>{
-      let cls='option-card';
-      if(s.checkedB){ if(o.correct) cls+=' correct'; else if(i===s.trSelected) cls+=' wrong'; }
-      else if(i===s.trSelected){ cls+=' selected'; }
-      return `<button class="${cls}" style="color:#ffffff !important;" ${s.checkedB?'disabled':''} onclick="selectL1Translation(${i})">${o.text}</button>`;
-    }).join('');
-
-    const btnLabel = s.checkedB ? 'próxima questão' : 'verificar tradução';
-    const btnOnclick = s.checkedB ? 'nextQuestion()' : 'checkL1Translation()';
-    const btnDisabled = !s.checkedB && s.trSelected===null;
-
-    content.innerHTML = `
-      <div class="question-card">
-        <p class="instruction">Escolha a tradução correta</p>
-        ${renderAudioControls(q.audio)}
-        <p class="fr-sentence">${q.frFull}</p>
-        <div class="options-grid">${trbtns}</div>
-      </div>
-      <div class="footer-space"></div>
-      <button class="btn btn-block" style="color:#ffffff !important;" ${btnDisabled?'disabled':''} onclick="${btnOnclick}">${btnLabel}</button>
-    `;
+    playSound('falha');
   }
-}
-
-function selectL1Blank(i){ 
-  playSound('click'); 
-  state.l1.bSelected=i; 
-  renderLevel1(); 
-}
-
-function checkL1Blank(){
-  const q = level1Data[state.qIndex];
-  const s = state.l1;
-  s.checkedA = true;
-  const isCorrect = s.bOptions[s.bSelected] === q.blank.correct;
-  if(isCorrect){ playSound('ok'); state.levelScores[1]+=1; state.totalScore+=1; }
-  else { playSound('falha'); }
   renderLevel1();
-}
-function advanceL1Step(){ playSound('click'); state.l1.step='B'; renderLevel1(); }
-
-function selectL1Translation(i){ playSound('click'); state.l1.trSelected=i; renderLevel1(); }
-function checkL1Translation(){
-  const s = state.l1;
-  s.checkedB = true;
-  const isCorrect = s.trOptions[s.trSelected].correct;
-  if(isCorrect){ playSound('ok'); state.levelScores[1]+=1; state.totalScore+=1; }
-  else { playSound('falha'); }
-  renderLevel1();
+  renderTopbar();
 }
 
 /* =========================================================
-   NÍVEL 2
+   NÍVEL 2 — Lacunas Duplas + Tradução
    ========================================================= */
 function setupLevel2Question(idx){
   const q = level2Data[idx];
@@ -1141,7 +1146,7 @@ function renderLevel2(){
 
     content.innerHTML = `
       <div class="question-card">
-        <p class="instruction">Complete as duas lacunas</p>
+        <p class="instruction">Etapa A · Complete as lacunas</p>
         ${renderAudioControls(q.audio)}
         <p class="fr-sentence">${sentence}</p>
         <p class="chip-label">Lacuna 1</p>
@@ -1166,7 +1171,7 @@ function renderLevel2(){
 
     content.innerHTML = `
       <div class="question-card">
-        <p class="instruction">Escolha a tradução correta</p>
+        <p class="instruction">Etapa B · Escolha a tradução correta</p>
         ${renderAudioControls(q.audio)}
         <p class="fr-sentence">${q.frFull}</p>
         <div class="options-grid">${trbtns}</div>
@@ -1177,15 +1182,12 @@ function renderLevel2(){
   }
 }
 
-function selectL2Blank(num, i){
+function selectL2Blank(which, i){
+  if(state.l2.checkedA) return;
   playSound('click');
-  const word = num===1 ? state.l2.b1Options[i] : state.l2.b2Options[i];
+  const word = which===1 ? state.l2.b1Options[i] : state.l2.b2Options[i];
   speakFrench(word);
-  if(num===1) {
-    state.l2.b1Selected=i;
-  } else {
-    state.l2.b2Selected=i;
-  }
+  if(which===1) state.l2.b1Selected=i; else state.l2.b2Selected=i;
   renderLevel2();
 }
 
@@ -1193,53 +1195,55 @@ function checkL2Blanks(){
   const q = level2Data[state.qIndex];
   const s = state.l2;
   s.checkedA = true;
-  const is1Ok = s.b1Options[s.b1Selected] === q.blank1.correct;
-  const is2Ok = s.b2Options[s.b2Selected] === q.blank2.correct;
-  
-  let pts = 0;
-  if(is1Ok) pts += 1;
-  if(is2Ok) pts += 1;
-  
-  state.levelScores[2] += pts;
-  state.totalScore += pts;
+  const b1ok = s.b1Options[s.b1Selected]===q.blank1.correct;
+  const b2ok = s.b2Options[s.b2Selected]===q.blank2.correct;
+  if(b1ok){ state.totalScore+=1; state.levelScores[2]+=1; }
+  if(b2ok){ state.totalScore+=1; state.levelScores[2]+=1; }
+  playSound(b1ok && b2ok ? 'ok' : 'falha');
+  renderLevel2();
+  renderTopbar();
+}
 
-  if(is1Ok && is2Ok) playSound('ok');
-  else playSound('falha');
+function advanceL2Step(){
+  playSound('click');
+  state.l2.step='B';
   renderLevel2();
 }
 
-function advanceL2Step(){ playSound('click'); state.l2.step='B'; renderLevel2(); }
-function selectL2Translation(i){ playSound('click'); state.l2.trSelected=i; renderLevel2(); }
+function selectL2Translation(i){
+  if(state.l2.checkedB) return;
+  playSound('click');
+  state.l2.trSelected = i;
+  renderLevel2();
+}
 
 function checkL2Translation(){
   const s = state.l2;
   s.checkedB = true;
-  const isCorrect = s.trOptions[s.trSelected].correct;
-  if(isCorrect){
+  if(s.trOptions[s.trSelected].correct){
+    state.totalScore+=1.5; state.levelScores[2]+=1.5;
     playSound('ok');
-    state.levelScores[2] += 1.5;
-    state.totalScore += 1.5;
   } else {
     playSound('falha');
   }
   renderLevel2();
+  renderTopbar();
 }
 
 /* =========================================================
-   NÍVEL 3
+   NÍVEL 3 — Lacunas + Montar Palavra + Traduzir
    ========================================================= */
 function setupLevel3Question(idx){
   const q = level3Data[idx];
   const lcOptions = shuffle(q.lcOptions);
-  
+
   const targetChars = q.montarWord.split('');
   const allChars = shuffle(targetChars);
   const tiles = allChars.map((char, id) => ({ id, char }));
 
   const trOptions = shuffle([
     { text: q.pt, correct: true },
-    { text: q.transWrong[0], correct: false },
-    { text: q.transWrong[1], correct: false }
+    ...q.transWrong.map(w => ({ text: w, correct: false }))
   ]);
 
   state.l3 = {
@@ -1364,6 +1368,7 @@ function renderLevel3(){
 }
 
 function selectL3LCOption(index){
+  if(state.l3.checkedA) return;
   playSound('click');
   speakFrench(state.l3.lcOptions[index]);
   state.l3.lcSelected = index;
@@ -1372,10 +1377,10 @@ function selectL3LCOption(index){
 
 function addLetterSlot(tileId){
   if(state.l3.checkedA) return;
-  playSound('click');
   const emptyIndex = state.l3.montarSlots.findIndex(s => s === null);
   if(emptyIndex !== -1){
     const tile = state.l3.letterTiles.find(t => t.id === tileId);
+    playSound('click');
     state.l3.montarSlots[emptyIndex] = tile;
     renderLevel3();
   }
@@ -1401,19 +1406,12 @@ function checkL3Blanks(){
   const builtMontarWord = s.montarSlots.map(x => x ? x.char : '').join('');
   s.isCorrectMontar = (builtMontarWord === q.montarWord);
 
-  let pts = 0;
-  if(s.isCorrectLC) pts += 1.5;
-  if(s.isCorrectMontar) pts += 1.5;
+  if(s.isCorrectLC){ state.totalScore += 1.5; state.levelScores[3] += 1.5; }
+  if(s.isCorrectMontar){ state.totalScore += 1.5; state.levelScores[3] += 1.5; }
 
-  state.levelScores[3] += pts;
-  state.totalScore += pts;
-
-  if(s.isCorrectLC && s.isCorrectMontar){
-    playSound('ok');
-  } else {
-    playSound('falha');
-  }
+  playSound(s.isCorrectLC && s.isCorrectMontar ? 'ok' : 'falha');
   renderLevel3();
+  renderTopbar();
 }
 
 function advanceL3Step(){
@@ -1423,6 +1421,7 @@ function advanceL3Step(){
 }
 
 function selectL3Translation(i){
+  if(state.l3.checkedB) return;
   playSound('click');
   state.l3.trSelected = i;
   renderLevel3();
@@ -1432,20 +1431,22 @@ function checkL3Translation(){
   const s = state.l3;
   s.checkedB = true;
   const isCorrect = s.trOptions[s.trSelected].correct;
-  
+
   if(isCorrect){
-    playSound('ok');
-    state.levelScores[3] += 1.5;
     state.totalScore += 1.5;
+    state.levelScores[3] += 1.5;
+    playSound('ok');
   } else {
     playSound('falha');
   }
   renderLevel3();
+  renderTopbar();
 }
 
-window.onload = () => { 
-  render(); 
-};
+/* =========================================================
+   INICIALIZAÇÃO
+   ========================================================= */
+render();
 </script>
 </body>
 </html>
